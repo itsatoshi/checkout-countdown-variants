@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Checkout countdown — lo-fi variants</title>
+    <style>
+      :root {
+        --blue-700: #017a9b;
+        --blue-800: #005f78;
+        --navy: #2015ff;
+        --purple: #7d26ff;
+        --ink: #2015ff;
+        --text: #2a2a2a;
+        --muted: #5b6270;
+        --line: #e6e8ec;
+        --bg: #f4f5f7;
+        --card: #fff;
+        --green-bg: #e8f7ee;
+        --green: #1f7a45;
+        --shadow: 0 8px 24px rgba(32, 21, 255, 0.08);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: Inter, system-ui, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+      }
+      .sheet {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 24px 20px 80px;
+      }
+      h1 {
+        font-size: 22px;
+        font-weight: 600;
+        margin: 0 0 8px;
+      }
+      .lede {
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.5;
+        max-width: 720px;
+        margin: 0 0 20px;
+      }
+      .tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 16px;
+      }
+      .tabs button {
+        border: 1px solid var(--line);
+        background: #fff;
+        border-radius: 999px;
+        padding: 8px 14px;
+        font: inherit;
+        font-size: 13px;
+        cursor: pointer;
+      }
+      .tabs button[aria-selected='true'] {
+        background: #2015ff;
+        color: #fff;
+        border-color: #2015ff;
+      }
+      .note {
+        background: #fff;
+        border: 1px dashed var(--line);
+        border-radius: 12px;
+        padding: 12px 16px;
+        font-size: 13px;
+        line-height: 1.5;
+        color: var(--muted);
+        margin-bottom: 16px;
+      }
+      .checkout {
+        display: grid;
+        grid-template-columns: 1fr 380px;
+        gap: 24px;
+        align-items: start;
+      }
+      @media (max-width: 900px) {
+        .checkout {
+          grid-template-columns: 1fr;
+        }
+      }
+      .card {
+        background: var(--card);
+        border-radius: 12px;
+        box-shadow: var(--shadow);
+      }
+      .form {
+        padding: 32px 36px;
+      }
+      .h-form {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 26px;
+        font-weight: 500;
+        margin: 0 0 28px;
+      }
+      .lock {
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+        background: #e8f4ff;
+        display: grid;
+        place-items: center;
+        font-size: 14px;
+      }
+      .field {
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 12px;
+        margin-bottom: 12px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+      .summary {
+        background: #fbfbfb;
+        border-radius: 12px;
+        box-shadow: var(--shadow);
+      }
+      .summary-inner {
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        padding-bottom: 20px;
+      }
+      .title-block {
+        padding: 20px 20px 0;
+      }
+      .title-block h2 {
+        margin: 0 0 8px;
+        font-size: 18px;
+        font-weight: 600;
+      }
+      .title-block ul {
+        margin: 0;
+        padding-left: 18px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+      .plans {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        padding: 0 16px;
+      }
+      .plan {
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 10px;
+        font-size: 12px;
+      }
+      .plan.on {
+        border-color: #2015ff;
+        box-shadow: 0 0 0 1px #2015ff;
+      }
+      .total {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        padding: 0 20px;
+      }
+      .pay {
+        font-size: 24px;
+        font-weight: 600;
+      }
+      .strike {
+        color: var(--muted);
+        font-size: 13px;
+        text-decoration: line-through;
+      }
+      .save {
+        background: var(--green-bg);
+        color: var(--green);
+        text-align: center;
+        padding: 8px;
+        font-size: 12px;
+      }
+      .cta {
+        margin: 0 16px;
+        border: 0;
+        border-radius: 12px;
+        padding: 14px;
+        width: calc(100% - 32px);
+        color: #fff;
+        font-weight: 600;
+        background: linear-gradient(90deg, var(--navy), var(--purple));
+        cursor: default;
+      }
+      .fine {
+        padding: 0 20px;
+        font-size: 11px;
+        color: var(--muted);
+        line-height: 1.4;
+      }
+      .banner {
+        grid-column: 1 / -1;
+        background: var(--blue-700);
+        color: #fff;
+        border-radius: 12px;
+        padding: 10px 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        font-size: 13px;
+        font-weight: 600;
+      }
+      .plp {
+        background: var(--blue-700);
+        color: #fff;
+        margin: 0 12px;
+        border-radius: 8px;
+        padding: 8px 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+        font-size: 12px;
+        font-weight: 600;
+      }
+      .units {
+        display: flex;
+        gap: 6px;
+        font-variant-numeric: tabular-nums;
+      }
+      .unit {
+        text-align: center;
+        min-width: 34px;
+        position: relative;
+      }
+      .unit strong {
+        display: block;
+        font-size: 16px;
+        font-weight: 400;
+      }
+      .unit span {
+        font-size: 9px;
+        opacity: 0.75;
+        font-weight: 600;
+      }
+      .unit:not(:last-child)::after {
+        content: ':';
+        position: absolute;
+        right: -5px;
+        top: 0;
+        opacity: 0.7;
+      }
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: #e8f4ff;
+        color: var(--blue-800);
+        border-radius: 999px;
+        padding: 6px 12px;
+        font-size: 12px;
+        font-weight: 600;
+        margin: 0 0 16px;
+      }
+      .inline-total {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 2px;
+      }
+      .inline-total .clock {
+        font-size: 12px;
+        color: var(--blue-800);
+        font-weight: 600;
+        font-variant-numeric: tabular-nums;
+      }
+      .save-timer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .text-only {
+        text-align: center;
+        font-size: 13px;
+        color: var(--blue-800);
+        font-weight: 600;
+        padding: 0 16px;
+      }
+      .hidden {
+        display: none !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="sheet">
+      <h1>Checkout countdown — low-fidelity variants</h1>
+      <p class="lede">
+        Same checkout skeleton (form + order summary). Live timer counts to a fake promo end. Pick a direction; we can
+        raise fidelity after. Control is the current page with no timer.
+      </p>
+      <div class="tabs" role="tablist">
+        <button type="button" data-variant="control" aria-selected="true">0 · Control</button>
+        <button type="button" data-variant="plp">A · PLP twin</button>
+        <button type="button" data-variant="banner">B · Page banner</button>
+        <button type="button" data-variant="chip">C · Title chip</button>
+        <button type="button" data-variant="save">D · Savings bar</button>
+        <button type="button" data-variant="inline">E · Next to total</button>
+        <button type="button" data-variant="copy">F · Copy only</button>
+      </div>
+      <p class="note" id="hypothesis"></p>
+      <div class="checkout" id="frame">
+        <div class="banner hidden" id="top-banner">
+          <span>Limited-time offer — complete checkout before this sale ends</span>
+          <div class="units" data-clock></div>
+        </div>
+        <section class="card form">
+          <div class="h-form">
+            <span class="lock">🔒</span>
+            Secure Checkout
+          </div>
+          <div class="chip hidden" id="title-chip"><span>Offer ends in</span> <span data-clock-text></span></div>
+          <div class="field">Card number</div>
+          <div class="field">Expiration · CVC</div>
+          <div class="field">Name on card</div>
+          <div class="field">Country / ZIP</div>
+        </section>
+        <aside class="summary">
+          <div class="summary-inner">
+            <div class="title-block">
+              <h2>AI Product Manager Nanodegree</h2>
+              <ul>
+                <li>Real-world projects</li>
+                <li>Technical mentor support</li>
+              </ul>
+            </div>
+            <div class="plans">
+              <div class="plan on">Monthly<br /><b>$249</b></div>
+              <div class="plan">Annual<br /><b>$199/mo</b></div>
+            </div>
+            <div class="field" style="margin: 0 16px">Discount code · SALE25 applied</div>
+            <div class="total">
+              <span>Total</span>
+              <div class="inline-total">
+                <span class="strike">$249</span>
+                <span class="pay">$186.75</span>
+                <span class="clock hidden" id="total-clock" data-clock-text></span>
+              </div>
+            </div>
+            <div class="save" id="save-bar">🎉 You save $62.25</div>
+            <p class="text-only hidden" id="copy-only">Sale ends in <span data-clock-text></span> — your rate is locked at checkout.</p>
+            <div class="plp hidden" id="plp-bar">
+              <span>Limited Time Offer!</span>
+              <div class="units" data-clock></div>
+            </div>
+            <button class="cta" type="button">Complete order</button>
+            <p class="fine">By clicking Complete order you agree to the total price now with automatic renewal until you cancel.</p>
+          </div>
+        </aside>
+      </div>
+    </div>
+    <script>
+      const end = Date.now() + 11 * 3600e3 + 23 * 60e3 + 45e3;
+      function parts() {
+        const ms = Math.max(0, end - Date.now());
+        const s = Math.floor(ms / 1000);
+        const d = Math.floor(s / 86400);
+        const h = Math.floor((s % 86400) / 3600);
+        const m = Math.floor((s % 3600) / 60);
+        const sec = s % 60;
+        const pad = (n) => String(n).padStart(2, '0');
+        return { d: pad(d), h: pad(h), m: pad(m), sec: pad(sec), text: `${pad(h)}:${pad(m)}:${pad(sec)}` };
+      }
+      function unitHtml(p) {
+        return (
+          '<div class="unit"><strong>' +
+          p.d +
+          '</strong><span>day</span></div>' +
+          '<div class="unit"><strong>' +
+          p.h +
+          '</strong><span>hrs</span></div>' +
+          '<div class="unit"><strong>' +
+          p.m +
+          '</strong><span>min</span></div>' +
+          '<div class="unit"><strong>' +
+          p.sec +
+          '</strong><span>sec</span></div>'
+        );
+      }
+      function tick() {
+        const p = parts();
+        document.querySelectorAll('[data-clock]').forEach((el) => {
+          el.innerHTML = unitHtml(p);
+        });
+        document.querySelectorAll('[data-clock-text]').forEach((el) => {
+          el.textContent = p.text;
+        });
+      }
+      tick();
+      setInterval(tick, 1000);
+
+      const copy = {
+        control:
+          'Control: current checkout. No countdown. Use this as the baseline for conversion and visual noise.',
+        plp:
+          'A · PLP twin: same blue.700 strip + DHMS boxes as the price-card countdown, stacked above Complete order. Strongest continuity from PLP → checkout. Risk: extra chrome next to an already prominent CTA.',
+        banner:
+          'B · Page banner: full-width bar above both columns. Visible before the form. Less tied to the CTA; may feel like a sitewide promo rather than this purchase.',
+        chip:
+          'C · Title chip: small pill under Secure Checkout. Lowest visual weight. Easy to miss on the summary-first mobile stack.',
+        save:
+          'D · Savings bar: timer rides the existing green “You save” row. Ties urgency to the discount already on the page. Weak if there is no coupon.',
+        inline:
+          'E · Next to total: compact clock under the payable amount. Sits in the money scan path without a new component chrome.',
+        copy:
+          'F · Copy only: one sentence, no boxes. Lowest pressure / dark-pattern risk. Also the easiest to ignore.',
+      };
+
+      const ids = {
+        banner: 'top-banner',
+        chip: 'title-chip',
+        plp: 'plp-bar',
+        clock: 'total-clock',
+        copy: 'copy-only',
+      };
+
+      function setVariant(key) {
+        document.querySelectorAll('.tabs button').forEach((b) => {
+          b.setAttribute('aria-selected', String(b.dataset.variant === key));
+        });
+        document.getElementById('hypothesis').textContent = copy[key];
+        document.getElementById('top-banner').classList.toggle('hidden', key !== 'banner');
+        document.getElementById('title-chip').classList.toggle('hidden', key !== 'chip');
+        document.getElementById('plp-bar').classList.toggle('hidden', key !== 'plp');
+        document.getElementById('total-clock').classList.toggle('hidden', key !== 'inline');
+        document.getElementById('copy-only').classList.toggle('hidden', key !== 'copy');
+        const save = document.getElementById('save-bar');
+        if (key === 'save') {
+          save.innerHTML =
+            '<div class="save-timer">🎉 You save $62.25 · offer ends in <span data-clock-text></span></div>';
+        } else {
+          save.textContent = '🎉 You save $62.25';
+        }
+        tick();
+      }
+
+      document.querySelectorAll('.tabs button').forEach((b) => {
+        b.addEventListener('click', () => setVariant(b.dataset.variant));
+      });
+      setVariant('control');
+    </script>
+  </body>
+</html>
